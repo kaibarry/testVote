@@ -1,0 +1,153 @@
+
+<%= current_voter.email if current_voter  %>
+<br />
+You voted for:
+<%= current_voter.vote.candidate.name if current_voter && current_voter.vote  %> <br />
+
+<%= link_to '.....Sign Out', destroy_voter_session_path, :method => :delete if voter_signed_in? %>
+
+
+<%= link_to 'Sign In', new_voter_session_path unless voter_signed_in? %>
+<%= link_to 'Sign up', new_voter_registration_path unless voter_signed_in? %>
+
+
+As of <%= Time.now.asctime %> <br />
+<h3>The current results are:</h3>
+
+
+<table>
+  <tr>
+    <th>Candidate......</th>
+    <th>Votes</th>
+    <th>Percentage</th>
+  </tr>
+
+    <% leader = Candidate.new %>
+  <% @candidates.each do |candidate| %>
+
+      <% total_for_candidate = @votes.select { |v| v.candidate == candidate } %>
+      <% leader = candidate if candidate.votes.length > leader.votes.length %>
+      <tr>
+        <td><%= candidate.name %> </td>
+        <td><%= candidate.votes.length %></td>
+        <td><%= (candidate.votes.length.to_f / @votes.length.to_f) * 100  %> %</td>
+        <td><%=   %></td>
+      </tr>
+  <% end %>
+
+</table>
+
+
+
+<h2> Current leader is........  <%= leader.name %> </h2>
+
+
+
+
+
+
+
+
+<h1>Listing voters</h1>
+
+<table>
+  <tr>
+    <th>Voter name</th>
+    <th></th>
+  </tr>
+
+<% @voters.each do |voter| %>
+  <tr>
+    <td><%= voter.email %></td>
+
+
+    <td><%= link_to 'Show', voter %></td>
+    <td><%= link_to 'Edit', edit_voter_path(voter) %></td>
+    <td><%= link_to 'Destroy', voter, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+
+<%= link_to 'New Voter', new_voter_path %>
+
+
+<h1>Listing candidates</h1>
+
+<table>
+  <tr>
+    <th>Candidate Name</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <% @candidates.each do |candidate| %>
+      <tr>
+        <td><%= candidate.name %></td>
+        <td><%= link_to 'Show', candidate %></td>
+        <td><%= link_to 'Edit', edit_candidate_path(candidate) %></td>
+        <td><%= link_to 'Destroy', candidate, confirm: 'Are you sure?', method: :delete %></td>
+      </tr>
+  <% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Candidate', new_candidate_path %>
+
+
+
+<h1>Listing Votes</h1>
+
+<h3>Total Votes</h3>  <%= @votes.length %>
+ <br /> <br />
+
+
+
+<% @candidates.each do |candidate| %>
+        <% total_for_candidate = @votes.select { |v| v.candidate == candidate } %>
+        <%= candidate.name %> <br />
+        <%= total_for_candidate.length %>  <br />
+<% end %>
+
+
+
+<table>
+  <tr>
+    <th>Candidate Name.......</th>
+    <th>Voter</th>
+    <th></th>
+  </tr>
+
+<% @votes.each do |vote| %>
+    <tr>
+      <td><%= vote.candidate.name %></td>
+
+      <td><%= link_to 'Show', vote %></td>
+      <td><%= link_to 'Edit', edit_vote_path(vote) %></td>
+      <td><%= link_to 'Destroy', vote, confirm: 'Are you sure?', method: :delete %></td>
+    </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Vote', new_vote_path %>
+
+
+
+<%= link_to '...Cast Ballot', cast_ballot_voter_path(current_voter) if voter_signed_in? %>
+
+
+
+<%= link_to '...VOTE NOW', new_vote_path if voter_signed_in? %>
+
+
+
+
+
+
+
+

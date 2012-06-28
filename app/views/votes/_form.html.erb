@@ -1,0 +1,28 @@
+
+<%= current_voter.email if current_voter  %>
+
+<%= link_to '.....Sign Out', destroy_voter_session_path, :method => :delete if voter_signed_in? %>
+
+<h2>Cast your ballot here!</h2>
+
+
+
+
+<%= form_for(@vote) do |f| %>
+
+    <h2>Vote:</h2>
+
+    <div class="field">
+          <% @candidates.each do | candidate | %>
+              <%= f.radio_button(:candidate_id, candidate.id) %>
+              <%= f.label "candidate", candidate.name %>
+              <%= f.hidden_field(:voter_id, :value => current_voter.id) %>
+              <br>
+          <% end %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+
+<% end %>

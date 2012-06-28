@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<%= current_voter.email %> <br />
+
+<h2>Just voted for</h2>
+
+<%=  current_voter.vote.candidate.name %> <br />
+
+
+<%= link_to 'Back to Results', welcome_voter_path %>
+
+
+

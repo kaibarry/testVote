@@ -1,0 +1,100 @@
+<h1>Welcome to the Voter</h1>
+
+<%= current_voter.email if current_voter  %>
+
+<% if current_voter && current_voter.is_administrator %>
+    <div class="admin">
+      You're an administrator!!
+    </div>
+<% end %>
+
+<%= link_to '.....Sign Out', destroy_voter_session_path, :method => :delete if voter_signed_in? %>
+<br />
+<br />
+
+<% if current_voter && current_voter.vote %>
+    <div class="productadmin" style="width: 400px; background-color:#FFFF98;">
+      On
+      <%= current_voter.vote.created_at.asctime %><br />
+      You voted for:
+      <strong><%= current_voter.vote.candidate.name %></strong>
+    </div>
+<% end %>
+
+<%= link_to 'Sign In', new_voter_session_path unless voter_signed_in? %>
+<%= link_to 'Sign up', new_voter_registration_path unless voter_signed_in? %>
+
+<div class="vote" style="width: 400px; background-color:#FFFF98;">
+<h2><%= link_to 'VOTE NOW!', new_vote_path if voter_signed_in? && !current_voter.vote %> </h2>
+  </div>
+
+
+
+
+<table cellspacing="6">
+  <tr>
+    <th>Candidate</th>
+    <th>Votes</th>
+    <th>Percentage</th>
+  </tr>
+  <% leader = Candidate.new %>
+
+  <% @candidates.each do |candidate| %>
+      <% leader = candidate if candidate.votes.length > leader.votes.length %>
+
+
+      <tr>
+        <td><%= candidate.name %> </td>
+        <td><%= candidate.votes.length %></td>
+        <td><%= ((candidate.votes.length.to_f / @votes.length.to_f) * 100).round(2)  %> %</td>
+        <td><%=   %></td>
+      </tr>
+  <% end %>
+
+</table>
+  <br />
+
+As of <%= Time.now.asctime %> the current leader is: <br />
+
+    <h1> <%= leader.name %> </h1>
+
+
+
+
+
+
+
+
+
+
+<br />
+
+
+<% if current_voter && current_voter.is_administrator %>
+    <div class="admin">
+      <h1>Administrator Section</h1>
+      <h3>Change the candidates if you like</h3>
+      <table cellspacing="6">
+        <tr>
+          <th>Candidate</th>
+          <th></th>
+          <th></th>
+        </tr>
+
+        <% @candidates.each do |candidate| %>
+            <tr>
+              <td><%= candidate.name %></td>
+              <td><%= link_to 'Show', candidate %></td>
+              <td><%= link_to 'Edit', edit_candidate_path(candidate) %></td>
+              <td><%= link_to 'Destroy', candidate, confirm: 'Are you sure?', method: :delete %></td>
+            </tr>
+        <% end %>
+      </table>
+
+      <br />
+
+      <%= link_to 'New Candidate', new_candidate_path %>
+
+
+    </div>
+<% end %>
