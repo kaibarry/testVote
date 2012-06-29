@@ -40,7 +40,8 @@
   <% leader = Candidate.new %>
 
   <% @candidates.each do |candidate| %>
-      <% leader = candidate if candidate.votes.length > leader.votes.length %>
+      <% leader = candidate if candidate.votes.length > leader.votes.length  #this unfortunately doesn't account for a tie %>
+
 
 
       <tr>

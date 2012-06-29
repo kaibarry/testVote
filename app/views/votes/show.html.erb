@@ -2,9 +2,9 @@
 
 <%= current_voter.email %> <br />
 
-<h2>Just voted for</h2>
+<h2>Just voted for... <%=  current_voter.vote.candidate.name %></h2>
 
-<%=  current_voter.vote.candidate.name %> <br />
+ <br />
 
 
 <%= link_to 'Back to Results', welcome_voter_path %>
